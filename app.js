@@ -30,12 +30,12 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use((err, req, res, next) => {
-  const { errorCode = 500 } = err;
-  if (errorCode === 500) {
+  const { statusCode } = err;
+  if (statusCode === 500) {
     res.status(500).send({ message: err.message });
     next();
   } else {
-    res.status(errorCode).send({ message: err.message });
+    res.status(statusCode).send({ message: err.message });
     next();
   }
 });

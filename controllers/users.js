@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }

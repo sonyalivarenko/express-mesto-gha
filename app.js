@@ -33,8 +33,11 @@ app.use((err, req, res, next) => {
   const { errorCode = 500 } = err;
   if (errorCode === 500) {
     res.status(500).send({ message: err.message });
+    next();
+  } else {
+    res.status(errorCode).send({ message: err.message });
+    next();
   }
-  next();
 });
 
 app.listen(PORT);

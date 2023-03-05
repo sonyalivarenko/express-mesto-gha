@@ -1,13 +1,13 @@
 /* eslint-disable linebreak-style */
-const router = require('express').Router();
+const routerCard = require('express').Router();
 const {
   getCards, deleteCard, createCard, likeCard, dislikeCard,
 } = require('../controllers/cards');
 
-router.get('/', getCards);
-router.delete('/:cardId', deleteCard);
-router.post('/', createCard);
-router.put('/:cardId/likes', likeCard);
-router.delete('/:cardId/likes', dislikeCard);
+routerCard.get('/', getCards);
+routerCard.delete('/:cardId', deleteCard);
+routerCard.post('/', createCard);
+routerCard.put('/:cardId/likes', likeCard);
+routerCard.delete('/:cardId/likes', dislikeCard);
 
-module.exports = router;
+module.exports = { routerCard };

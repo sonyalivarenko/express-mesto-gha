@@ -3,6 +3,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { router } = require('./routes/index');
 
 const { PORT = 3000 } = process.env;
 
@@ -16,7 +17,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
     console.log('Connected');
   })
   .catch((err) => {
-    console.log('Error on database connection');
     console.error(err);
   });
 
@@ -26,8 +26,8 @@ app.use((req, res, next) => {
   };
   next();
 });
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+
+app.use('/', router);
 
 app.use((err, req, res, next) => {
   const { statusCode } = err;

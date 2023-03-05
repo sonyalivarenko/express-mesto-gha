@@ -30,7 +30,7 @@ module.exports.createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }
@@ -52,7 +52,7 @@ module.exports.likeCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }
@@ -74,7 +74,7 @@ module.exports.dislikeCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }

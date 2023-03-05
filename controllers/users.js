@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-import-module-exports */
 /* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
@@ -21,7 +22,13 @@ module.exports.getUserId = (req, res, next) => {
         throw new DocumentNotFoundError('Пользователь не найден');
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
+        next(new ValidationError('Переданы некорректные данные'));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -29,7 +36,7 @@ module.exports.createUser = (req, res, next) => {
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if ((err instanceof mongoose.Error.ValidationError)) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }
@@ -56,7 +63,7 @@ module.exports.updateProfile = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }
@@ -83,7 +90,7 @@ module.exports.updateAvatar = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }

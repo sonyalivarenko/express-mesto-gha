@@ -1,13 +1,40 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb ');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/user', require('./routes/users'));
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
+  .then(() => {
+    console.log('Connected');
+  })
+  .catch((err) => {
+    console.log('Error on database connection');
+    console.error(err);
+  });
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '640079983388d238e9c49910',
+  };
+  next();
+});
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
+
+app.use((err, req, res, next) => {
+  const { errorCode = 500 } = err;
+  if (errorCode === 500) {
+    res.status(500).send({ message: err.message });
+  }
+  next();
+});
 
 app.listen(PORT);

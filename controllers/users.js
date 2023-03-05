@@ -63,6 +63,10 @@ module.exports.updateProfile = (req, res, next) => {
       }
     })
     .catch((err) => {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
+        next(new ValidationError('Переданы некорректные данные'));
+        return;
+      }
       next(err);
     });
 };

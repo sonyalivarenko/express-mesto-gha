@@ -63,10 +63,6 @@ module.exports.updateProfile = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if ((err instanceof mongoose.Error.ValidationError)) {
-        next(new ValidationError('Переданы некорректные данные'));
-        return;
-      }
       next(err);
     });
 };
@@ -90,7 +86,7 @@ module.exports.updateAvatar = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if ((err instanceof mongoose.Error.ValidationError)) {
+      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }

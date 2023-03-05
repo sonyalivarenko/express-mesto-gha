@@ -22,7 +22,13 @@ module.exports.deleteCard = (req, res, next) => {
         throw new DocumentNotFoundError('Карточка не найдена');
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if ((err instanceof mongoose.Error.CastError)) {
+        next(new ValidationError('Переданы некорректные данные'));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports.createCard = (req, res, next) => {

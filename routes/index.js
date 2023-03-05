@@ -9,7 +9,7 @@ const router = require('express').Router();
 router.use('/users', routerUser);
 router.use('/cards', routerCard);
 router.use(() => {
-  throw new DocumentNotFoundError('Данная страница не найдена');
+  throw new DocumentNotFoundError('Страница не найдена');
 });
 
 module.exports = { router };

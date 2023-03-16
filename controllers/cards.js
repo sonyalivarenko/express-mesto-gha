@@ -16,8 +16,8 @@ module.exports.getCards = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const { userId } = req.user._id;
+  Card.findById(cardId).populate('owner');
   Card.findByIdAndRemove(cardId)
-    .populate('owner')
     .then((card) => {
       if (card) {
         const { owner } = card.owner._id;

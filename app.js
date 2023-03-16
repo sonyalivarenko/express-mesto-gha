@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { router } = require('./routes/index');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -22,8 +22,21 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
     console.error(err);
   });
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().regex(/https?:\/\/w*[-._~:/?#[\]@!$&'()*+,;=0-9a-z]+#?/i),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
 app.use(auth);
 
 app.use('/', router);

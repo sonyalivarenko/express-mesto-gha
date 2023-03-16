@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 /* eslint-disable spaced-comment */
 /* eslint-disable import/no-import-module-exports */
 /* eslint-disable max-len */
@@ -17,25 +16,28 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  const userId = req.user._id;
-  try {
-    const card = Card.findById(cardId).populate('owner');
-    const ownerId = card.owner.id;
-    if (!card) {
-      throw new DocumentNotFoundError('Карточка не найдена');
-    }
-    if (ownerId !== userId) {
-      throw new ForbiddenError('Нельзя удалить чужую карточку');
-    }
-    Card.findByIdAndRemove(cardId);
-    res.send({ data: card });
-  } catch (err) {
+  const { userId } = req.user._id;
+  Card.findByIdAndRemove(cardId)
+    .populate('owner')
+    .then((card) => {
+      if (card) {
+        const ownerId = card.owner.id;
+        if (ownerId === userId) {
+          res.send({ data: card });
+        } else {
+          throw new ForbiddenError('Нельзя удалить чужую карточку');
+        }
+      } else {
+        throw new DocumentNotFoundError('Карточка не найдена');
+      }
+    })
+    .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         next(new ValidationError('Переданы некорректные данные'));
         return;
       }
       next(err);
-    }
+    });
 };
 
 module.exports.createCard = (req, res, next) => {

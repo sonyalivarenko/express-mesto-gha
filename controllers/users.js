@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
 /* eslint-disable import/no-import-module-exports */
@@ -126,7 +127,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getСurrentUser = (req, res, next) => {
-  const { userId } = req.user._id;
+  const userId = req.user._id;
   User.findById(userId)
     .then((user) => {
       if (user) {

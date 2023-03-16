@@ -17,10 +17,10 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  const { userId } = req.user._id;
+  const userId = req.user._id;
   try {
     const card = Card.findById(cardId).populate('owner');
-    const { ownerId } = card.owner.id;
+    const ownerId = card.owner.id;
     if (!card) {
       throw new DocumentNotFoundError('Карточка не найдена');
     }

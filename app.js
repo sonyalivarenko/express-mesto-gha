@@ -45,7 +45,7 @@ app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   if (statusCode === 500) {
-    res.status(500).send({ message: err.message });
+    res.status(500).send({ message: 'Ошибка на сервере' });
     next();
   } else {
     res.status(statusCode).send({ message: err.message });

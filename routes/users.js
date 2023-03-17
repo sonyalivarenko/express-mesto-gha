@@ -1,6 +1,8 @@
+/* eslint-disable consistent-return */
 /* eslint-disable import/order */
 const routerUser = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const customValidate = require('../utils/customValidate');
 const {
   getUsers, getUserId, updateAvatar, updateProfile, getСurrentUser,
 } = require('../controllers/users');
@@ -9,7 +11,7 @@ routerUser.get('/', getUsers);
 routerUser.get('/me', getСurrentUser);
 routerUser.get('/:userId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum(),
+    userId: Joi.string().custom(customValidate),
   }),
 }), getUserId);
 routerUser.patch('/me', celebrate({

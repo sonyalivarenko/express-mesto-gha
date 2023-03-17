@@ -1,5 +1,7 @@
+/* eslint-disable import/order */
 /* eslint-disable linebreak-style */
 const routerCard = require('express').Router();
+const customValidate = require('../utils/customValidate');
 const { celebrate, Joi } = require('celebrate');
 const {
   getCards, deleteCard, createCard, likeCard, dislikeCard,
@@ -8,7 +10,7 @@ const {
 routerCard.get('/', getCards);
 routerCard.delete('/:cardId', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    userId: Joi.string().custom(customValidate),
   }),
 }), deleteCard);
 routerCard.post('/', celebrate({
@@ -19,12 +21,12 @@ routerCard.post('/', celebrate({
 }), createCard);
 routerCard.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    userId: Joi.string().custom(customValidate),
   }),
 }), likeCard);
 routerCard.delete('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    userId: Joi.string().custom(customValidate),
   }),
 }), dislikeCard);
 

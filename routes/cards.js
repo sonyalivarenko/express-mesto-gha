@@ -1,8 +1,6 @@
-/* eslint-disable import/order */
-/* eslint-disable linebreak-style */
 const routerCard = require('express').Router();
-const customValidate = require('../utils/customValidate');
 const { celebrate, Joi } = require('celebrate');
+const { customValidate } = require('../utils/customValidate');
 const {
   getCards, deleteCard, createCard, likeCard, dislikeCard,
 } = require('../controllers/cards');

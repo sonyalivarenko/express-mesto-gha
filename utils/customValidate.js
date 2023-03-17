@@ -7,4 +7,4 @@ function customValidate(value) {
   }
 }
 
-module.exports = customValidate;
+module.exports = { customValidate };

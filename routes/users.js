@@ -1,8 +1,6 @@
-/* eslint-disable consistent-return */
-/* eslint-disable import/order */
 const routerUser = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const customValidate = require('../utils/customValidate');
+const { customValidate } = require('../utils/customValidate');
 const {
   getUsers, getUserId, updateAvatar, updateProfile, getСurrentUser,
 } = require('../controllers/users');

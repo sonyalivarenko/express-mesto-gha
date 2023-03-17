@@ -4,7 +4,7 @@
 /* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
 const ValidationError = require('../errors/ValidationError');
-const DocumentNotFoundError = require('../errors/DocumentNotFoundError');
+// const DocumentNotFoundError = require('../errors/DocumentNotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const Card = require('../models/card');
 
@@ -21,7 +21,7 @@ module.exports.deleteCard = (req, res, next) => {
     .populate('owner')
     .then((card) => {
       if (!card) {
-        throw new DocumentNotFoundError('Карточка не найдена');
+        throw new ValidationError('Карточка не найдена');
       } else {
         const ownerId = card.owner.id;
         if (ownerId !== userId) {
@@ -33,10 +33,6 @@ module.exports.deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.CastError) {
-        next(new ValidationError('Переданы некорректные данные'));
-        return;
-      }
       next(err);
     });
 };
@@ -64,14 +60,10 @@ module.exports.likeCard = (req, res, next) => {
       if (card) {
         res.send({ data: card });
       } else {
-        throw new DocumentNotFoundError('Карточка не найдена');
+        throw new ValidationError('Карточка не найдена');
       }
     })
     .catch((err) => {
-      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
-        next(new ValidationError('Переданы некорректные данные'));
-        return;
-      }
       next(err);
     });
 };
@@ -86,14 +78,10 @@ module.exports.dislikeCard = (req, res, next) => {
       if (card) {
         res.send({ data: card });
       } else {
-        throw new DocumentNotFoundError('Карточка не найдена');
+        throw new ValidationError('Карточка не найдена');
       }
     })
     .catch((err) => {
-      if ((err instanceof mongoose.Error.ValidationError) || (err instanceof mongoose.Error.CastError)) {
-        next(new ValidationError('Переданы некорректные данные'));
-        return;
-      }
       next(err);
     });
 };

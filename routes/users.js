@@ -7,7 +7,11 @@ const {
 
 routerUser.get('/', getUsers);
 routerUser.get('/me', getСurrentUser);
-routerUser.get('/:userId', getUserId);
+routerUser.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum(),
+  }),
+}), getUserId);
 routerUser.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),

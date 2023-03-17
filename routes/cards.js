@@ -8,7 +8,7 @@ const {
 routerCard.get('/', getCards);
 routerCard.delete('/:cardId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().custom(customValidate),
+    cardId: Joi.string().custom(customValidate),
   }),
 }), deleteCard);
 routerCard.post('/', celebrate({
@@ -19,12 +19,12 @@ routerCard.post('/', celebrate({
 }), createCard);
 routerCard.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().custom(customValidate),
+    cardId: Joi.string().custom(customValidate),
   }),
 }), likeCard);
 routerCard.delete('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().custom(customValidate),
+    cardId: Joi.string().custom(customValidate),
   }),
 }), dislikeCard);
 

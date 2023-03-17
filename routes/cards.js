@@ -1,4 +1,6 @@
+/* eslint-disable quotes */
 /* eslint-disable linebreak-style */
+const validator = require('validator');
 const routerCard = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const {
@@ -8,7 +10,7 @@ const {
 routerCard.get('/', getCards);
 routerCard.delete('/:cardId', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    cardId: Joi.string().custom((value, helper) => (validator(value) ? value : helper.message({ custom: "Некорректный Id" }))),
   }),
 }), deleteCard);
 routerCard.post('/', celebrate({
@@ -19,12 +21,12 @@ routerCard.post('/', celebrate({
 }), createCard);
 routerCard.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    cardId: Joi.string().custom((value, helper) => (validator(value) ? value : helper.message({ custom: "Некорректный Id" }))),
   }),
 }), likeCard);
 routerCard.delete('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum(),
+    cardId: Joi.string().custom((value, helper) => (validator(value) ? value : helper.message({ custom: "Некорректный Id" }))),
   }),
 }), dislikeCard);
 

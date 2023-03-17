@@ -1,4 +1,6 @@
+/* eslint-disable quotes */
 /* eslint-disable import/order */
+const validator = require('validator');
 const routerUser = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const {
@@ -9,7 +11,7 @@ routerUser.get('/', getUsers);
 routerUser.get('/me', getСurrentUser);
 routerUser.get('/:userId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum(),
+    cardId: Joi.string().custom((value, helper) => (validator(value) ? value : helper.message({ custom: "Некорректный Id" }))),
   }),
 }), getUserId);
 routerUser.patch('/me', celebrate({

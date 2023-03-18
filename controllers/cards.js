@@ -4,7 +4,7 @@
 /* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
 const ValidationError = require('../errors/ValidationError');
-// const DocumentNotFoundError = require('../errors/DocumentNotFoundError');
+const DocumentNotFoundError = require('../errors/DocumentNotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const Card = require('../models/card');
 
@@ -27,8 +27,13 @@ module.exports.deleteCard = (req, res, next) => {
         if (ownerId !== userId) {
           throw new ForbiddenError('Нельзя удалить чужую карточку');
         } else {
-          Card.deleteOne(card);
-          res.send({ data: card });
+          Card.deleteOne(card)
+            .then((info) => {
+              res.send({ data: info });
+            })
+            .catch(() => {
+              next(new DocumentNotFoundError('Произошел сбой'));
+            });
         }
       }
     })

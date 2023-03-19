@@ -4,7 +4,6 @@
 /* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
 const ValidationError = require('../errors/ValidationError');
-const DocumentNotFoundError = require('../errors/DocumentNotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 const Card = require('../models/card');
 
@@ -31,8 +30,8 @@ module.exports.deleteCard = (req, res, next) => {
             .then((info) => {
               res.send({ data: info });
             })
-            .catch(() => {
-              next(new DocumentNotFoundError('Произошел сбой'));
+            .catch((err) => {
+              next(err);
             });
         }
       }
